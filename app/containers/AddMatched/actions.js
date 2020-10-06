@@ -4,10 +4,12 @@
  *
  */
 
-import { DEFAULT_ACTION } from './constants';
+// eslint-disable-next-line import/named
+import { ADD_MATCH_ACTION } from './constants';
 
-export function defaultAction() {
+export function addMatchAction(match) {
   return {
-    type: DEFAULT_ACTION,
+    type: ADD_MATCH_ACTION,
+    match,
   };
 }

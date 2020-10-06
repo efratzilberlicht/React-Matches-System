@@ -4,4 +4,4 @@
  *
  */
 
-export const DEFAULT_ACTION = 'app/AddMatched/DEFAULT_ACTION';
+export const ADD_MATCH_ACTION = 'app/AddMatched/ADD_MATCH_ACTION';

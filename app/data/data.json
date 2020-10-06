@@ -1,0 +1,182 @@
+[
+    {
+        "tz": "132456398",
+        "firstName": "Roy",
+        "lastName": "Malone",
+        "age": 40,
+        "gender": "male",
+        "birthdate": "12/12/2000",
+        "status": "single"
+    },
+    {
+        "tz": "137744398",
+        "firstName": "Kathrine",
+        "lastName": "Crawford",
+        "age": 35,
+        "gender": "male",
+        "birthdate": "12/01/2000",
+        "status": "divorced"
+    },
+    {
+        "tz": "987456398",
+        "firstName": "Norman",
+        "lastName": "Stanley",
+        "age": 41,
+        "gender": "female",
+        "birthdate": "02/12/1999",
+        "status": "divorced"
+    },
+    {
+        "tz": "132456729",
+        "firstName": "Lorena",
+        "lastName": "Bell",
+        "age": 44,
+        "gender": "male",
+        "birthdate": "30/12/2002",
+        "status": "divorced"
+    },
+    {
+        "tz": "476778954",
+        "firstName": "Eleanor",
+        "lastName": "Rhodes",
+        "age": 17,
+        "gender": "female",
+        "birthdate": "18/05/1998",
+        "status": "single"
+    },
+    {
+        "tz": "342567860",
+        "firstName": "Garrett",
+        "lastName": "Mcdaniel",
+        "age": 17,
+        "gender": "female",
+        "birthdate": "12/10/2003",
+        "status": "widower"
+    },
+    {
+        "tz": "234543897",
+        "firstName": "Keisha",
+        "lastName": "Cook",
+        "age": 18,
+        "gender": "female",
+        "birthdate": "08/12/1990",
+        "status": "divorced"
+    },
+    {
+        "tz": "345624987",
+        "firstName": "Beck",
+        "lastName": "Coffey",
+        "age": 36,
+        "gender": "female",
+        "birthdate": "19/12/1995",
+        "status": "single"
+    },
+    {
+        "tz": "444433356",
+        "firstName": "Adeline",
+        "lastName": "Reid",
+        "age": 30,
+        "gender": "male",
+        "birthdate": "12/11/2000",
+        "status": "widower"
+    },
+    {
+        "tz": "222213349",
+        "firstName": "Megan",
+        "lastName": "Owen",
+        "age": 48,
+        "gender": "female",
+        "birthdate": "22/02/2000",
+        "status": "widower"
+    },
+    {
+        "tz": "567465786",
+        "firstName": "Leslie",
+        "lastName": "Hogan",
+        "age": 23,
+        "gender": "male",
+        "birthdate": "12/03/2000",
+        "status": "single"
+    },
+    {
+        "tz": "767787656",
+        "firstName": "Washington",
+        "lastName": "Charles",
+        "age": 50,
+        "gender": "female",
+        "birthdate": "12/12/1980",
+        "status": "widower"
+    },
+    {
+        "tz": "887866543",
+        "firstName": "Shana",
+        "lastName": "Good",
+        "age": 49,
+        "gender": "female",
+        "birthdate": "12/08/2000",
+        "status": "single"
+    },
+    {
+        "tz": "987654321",
+        "firstName": "Bird",
+        "lastName": "Rosa",
+        "age": 36,
+        "gender": "male",
+        "birthdate": "12/11/2000",
+        "status": "widower"
+    },
+    {
+        "tz": "888877766",
+        "firstName": "Barrett",
+        "lastName": "Bailey",
+        "age": 20,
+        "gender": "female",
+        "birthdate": "18/12/2000",
+        "status": "single"
+    },
+    {
+        "tz": "554637829",
+        "firstName": "Bean",
+        "lastName": "Chapman",
+        "age": 33,
+        "gender": "female",
+        "birthdate": "17/12/2000",
+        "status": "widower"
+    },
+    {
+        "tz": "467539087",
+        "firstName": "Todd",
+        "lastName": "Mckenzie",
+        "age": 24,
+        "gender": "male",
+        "birthdate": "29/12/2000",
+        "status": "divorced"
+    },
+    {
+        "tz": "065437289",
+        "firstName": "Eloise",
+        "lastName": "Hendricks",
+        "age": 32,
+        "gender": "female",
+        "birthdate": "17/11/2000",
+        "status": "single"
+    },
+    {
+        "tz": "687908989",
+        "firstName": "Sonya",
+        "lastName": "Gamble",
+        "age": 31,
+        "gender": "female",
+        "birthdate": "12/02/1988",
+        "status": "single"
+    },
+    {
+        "tz": "777777777",
+        "firstName": "Gail",
+        "lastName": "Eaton",
+        "age": 46,
+        "gender": "female",
+        "birthdate": "11/11/1970",
+        "status": "widower"
+    }
+]
