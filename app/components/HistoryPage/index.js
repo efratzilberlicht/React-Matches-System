@@ -7,17 +7,18 @@ import { createStructuredSelector } from 'reselect';
 import { makeSelectMatches } from 'containers/App/selectors';
 import React, { memo } from 'react';
 import { Button, DropdownButton, Dropdown } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export function HistoryPage({ matches }) {
   function pickMatchesList(button, choose) {
-    switch ('button') {
+    switch (button) {
       case 'status':
         sortByStatus(choose);
         break;
       case 'date':
         sortByBirthdate(choose);
         break;
-      case 'originList':
+      case 'originalList':
         renderoriginList();
         break;
       default:
@@ -38,8 +39,8 @@ export function HistoryPage({ matches }) {
   // const sortedActivities = activities.sort((a, b) => b.date - a.date)
 
   function sortByBirthdate(order) {
-    const sortedMatchesList = matches.sort((a, b) => b.date - a.date);
-    if (order === 'סדר עולה') {
+    const sortedMatchesList = matches.sort((a, b) => b.birthdate - a.birthdate);
+    if (order === 'increase') {
       sortedMatchesList.reverse();
     }
     renderMatchesList(sortedMatchesList);
@@ -50,8 +51,13 @@ export function HistoryPage({ matches }) {
   }
   // MatchesList - למרות שכרגע הוא לא עובד אז החזרתי לרשימה הרגילה כדי שהסינון יעבוד
   // eslint-disable-next-line no-shadow
-  function renderMatchesList() {
-    return matches.map(match => (
+  function renderMatchesList(sortedMatchesList) {
+    if (!sortedMatchesList) {
+      // eslint-disable-next-line no-param-reassign
+      sortedMatchesList = matches;
+    }
+    console.log(sortedMatchesList);
+    return sortedMatchesList.map(match => (
       <div>
         {match.tz} {match.firstName} {match.lastName} {match.age} {match.gender}{' '}
         {match.brithdate} {match.status}
@@ -63,37 +69,36 @@ export function HistoryPage({ matches }) {
       <h2>Matches History</h2>
       <DropdownButton
         id="dropdown-basic-button"
-        title="מיין לפי סטטוס"
-        value="status"
-        onClick={() => {
-          pickMatchesList(value, event.target.value);
+        title="Sort by status"
+        onSelect={e => {
+          pickMatchesList('status', e);
         }}
       >
-        <Dropdown.Item>רווק</Dropdown.Item>
-        <Dropdown.Item>גרוש</Dropdown.Item>
-        <Dropdown.Item>אלמן</Dropdown.Item>
+        <Dropdown.Item eventKey="single">single</Dropdown.Item>
+        <Dropdown.Item eventKey="divorced">divorced</Dropdown.Item>
+        <Dropdown.Item eventKey="widower">widower</Dropdown.Item>
       </DropdownButton>
       <br />
       <DropdownButton
         id="dropdown-basic-button"
-        title="מיין לפי תאריך"
-        value="date"
-        onClick={() => {
-          pickMatchesList(value, event.target.value);
+        title="Sort by birthdate"
+        // value="date"
+        onSelect={e => {
+          pickMatchesList('date', e);
         }}
       >
-        <Dropdown.Item>בסדר עולה</Dropdown.Item>
-        <Dropdown.Item>בסדר יורד</Dropdown.Item>
+        <Dropdown.Item eventKey="increase">increase order</Dropdown.Item>
+        <Dropdown.Item eventKey="decrease">decrease order</Dropdown.Item>
       </DropdownButton>
       <br />
       <Button
         variant="primary"
-        value="originList"
+        value="originalList"
         onClick={() => {
-          pickMatchesList(value, '');
+          pickMatchesList('originalList');
         }}
       >
-        לרשימה המקורית
+        Back to the original list
       </Button>{' '}
       {/* pickMatchesList זה אמןר להיות */}
       <ul>{renderMatchesList()}</ul>
