@@ -3,6 +3,7 @@ import {
   LOAD_MATCH_SUCCESS,
   LOAD_MATCH_ERROR,
   ADD_MATCH,
+  GET_MATCH,
   UPDATE_MATCH,
 } from './constants';
 
@@ -45,6 +46,13 @@ export function matchesLoadingError(error) {
     error,
   };
 }
+// GET MATVHED
+export function getMatched(matchedTz) {
+  return {
+    type: GET_MATCH,
+    matchedTz,
+  };
+}
 // ADD MATCHED
 export function addMatched(matched) {
   return {
@@ -53,9 +61,9 @@ export function addMatched(matched) {
   };
 }
 // UPDATE MATCHED
-export function updateMatched(matches) {
+export function updateMatched(matchedTz) {
   return {
     type: UPDATE_MATCH,
-    matches,
+    matchedTz,
   };
 }

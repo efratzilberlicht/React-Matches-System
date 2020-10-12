@@ -1,3 +1,4 @@
+import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // import { Helmet } from 'react-helmet';
@@ -5,11 +6,16 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectMatches } from 'containers/App/selectors';
-import React, { memo } from 'react';
-import { Button, DropdownButton, Dropdown } from 'react-bootstrap';
+import { DropdownButton, Dropdown, CardColumns } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './style.scss';
+// eslint-disable-next-line import/no-named-as-default-member
+import { set } from 'lodash';
+import MatchCard from './MatchCard';
 
 export function HistoryPage({ matches }) {
+  const [sortedMatches, setSortedMatches] = useState(renderMatchesList());
+
   function pickMatchesList(button, choose) {
     switch (button) {
       case 'status':
@@ -30,78 +36,69 @@ export function HistoryPage({ matches }) {
     const sortedMatchesList = matches.filter(
       matched => matched.status === status,
     );
-    renderMatchesList(sortedMatchesList);
+
+    setSortedMatches(renderMatchesList(sortedMatchesList));
   }
-  // var sorted_meetings = meetings.sort((a,b) => {
-  //     return new Date(a.scheduled_for).getTime() -
-  //         new Date(b.scheduled_for).getTime()
-  // }).reverse();
-  // const sortedActivities = activities.sort((a, b) => b.date - a.date)
 
   function sortByBirthdate(order) {
-    const sortedMatchesList = matches.sort((a, b) => b.birthdate - a.birthdate);
+    const sortedMatchesList = matches.sort(
+      (a, b) => new Date(b.birthdate) - new Date(a.birthdate),
+    );
     if (order === 'increase') {
       sortedMatchesList.reverse();
     }
-    renderMatchesList(sortedMatchesList);
+    setSortedMatches(renderMatchesList(sortedMatchesList));
   }
 
   function renderoriginList() {
-    renderMatchesList(matches);
+    setSortedMatches(renderMatchesList(matches));
   }
-  // MatchesList - למרות שכרגע הוא לא עובד אז החזרתי לרשימה הרגילה כדי שהסינון יעבוד
-  // eslint-disable-next-line no-shadow
-  function renderMatchesList(sortedMatchesList) {
-    if (!sortedMatchesList) {
-      // eslint-disable-next-line no-param-reassign
-      sortedMatchesList = matches;
-    }
-    console.log(sortedMatchesList);
+
+  function renderMatchesList(sortedMatchesList = matches) {
     return sortedMatchesList.map(match => (
-      <div>
-        {match.tz} {match.firstName} {match.lastName} {match.age} {match.gender}{' '}
-        {match.brithdate} {match.status}
-      </div>
+      <MatchCard key={match.tz} match={match} />
     ));
   }
   return (
-    <div>
+    <div className="container">
       <h2>Matches History</h2>
-      <DropdownButton
-        id="dropdown-basic-button"
-        title="Sort by status"
-        onSelect={e => {
-          pickMatchesList('status', e);
-        }}
-      >
-        <Dropdown.Item eventKey="single">single</Dropdown.Item>
-        <Dropdown.Item eventKey="divorced">divorced</Dropdown.Item>
-        <Dropdown.Item eventKey="widower">widower</Dropdown.Item>
-      </DropdownButton>
-      <br />
-      <DropdownButton
-        id="dropdown-basic-button"
-        title="Sort by birthdate"
-        // value="date"
-        onSelect={e => {
-          pickMatchesList('date', e);
-        }}
-      >
-        <Dropdown.Item eventKey="increase">increase order</Dropdown.Item>
-        <Dropdown.Item eventKey="decrease">decrease order</Dropdown.Item>
-      </DropdownButton>
-      <br />
-      <Button
-        variant="primary"
-        value="originalList"
-        onClick={() => {
-          pickMatchesList('originalList');
-        }}
-      >
-        Back to the original list
-      </Button>{' '}
-      {/* pickMatchesList זה אמןר להיות */}
-      <ul>{renderMatchesList()}</ul>
+      <div id="buttons">
+        <button
+          type="submit"
+          className="btn"
+          value="originalList"
+          onClick={() => {
+            pickMatchesList('originalList');
+          }}
+        >
+          Back to the original list
+        </button>
+        <DropdownButton
+          id="dropdown-basic-button"
+          title="Sort by birthdate"
+          // value="date"
+          onSelect={e => {
+            pickMatchesList('date', e);
+          }}
+        >
+          <Dropdown.Item eventKey="increase">increase order</Dropdown.Item>
+          <Dropdown.Item eventKey="decrease">decrease order</Dropdown.Item>
+        </DropdownButton>
+        <DropdownButton
+          id="dropdown-basic-button"
+          title="Sort by status"
+          onSelect={e => {
+            pickMatchesList('status', e);
+          }}
+        >
+          <Dropdown.Item eventKey="single">single</Dropdown.Item>
+          <Dropdown.Item eventKey="divorced">divorced</Dropdown.Item>
+          <Dropdown.Item eventKey="widower">widower</Dropdown.Item>
+        </DropdownButton>
+      </div>
+      <div id="list">
+        <CardColumns>{sortedMatches}</CardColumns>
+      </div>
     </div>
   );
 }

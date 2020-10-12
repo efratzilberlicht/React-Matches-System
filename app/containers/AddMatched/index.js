@@ -7,11 +7,15 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import { Form, Col, Row, Button, Alert } from 'react-bootstrap';
-import HistoryPage from 'components/HistoryPage';
-import HomePage from 'containers/HomePage/Loadable';
-import MatchesView from 'containers/MatchesView';
-import { Switch, Route, Link } from 'react-router-dom';
+import {
+  Form,
+  Col,
+  Row,
+  Button,
+  Alert,
+  DropdownButton,
+  Dropdown,
+} from 'react-bootstrap';
 import HeaderLink from 'components/Header/HeaderLink';
 import { makeSelectError } from 'containers/App/selectors';
 import { addMatched } from 'containers/App/actions';
@@ -20,21 +24,20 @@ import makeSelectAddMatched from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import 'bootstrap/dist/css/bootstrap.min.css';
-// eslint-disable-next-line import/order
-import history from 'utils/history';
-
-// import messages from './components/Header/messages.js';
+import './style.scss';
 
 export function AddMatched({ onAddedMatched }) {
   useInjectReducer({ key: 'addMatched', reducer });
   useInjectSaga({ key: 'addMatched', saga });
- 
+  // to add a matched
   const [addaMatched, setAddaMatched] = useState(false);
-  const [addMatch, setaddMatched] = useState(true);
+  // to show all the form
+  const [addMatch, setAddMatch] = useState(true);
   const [alert, setalert] = useState(false);
   const click = () => {
     onAddedMatched(addaMatched);
-    setaddMatched(false);
+    // debugger;
+    setAddMatch(false);
     setalert(true);
   };
 
@@ -52,8 +55,9 @@ export function AddMatched({ onAddedMatched }) {
       </Helmet>
 
       {addMatch ? (
-        <div>
-          <h2>Add Matched</h2>
+        <div id="form">
+          <h2>Add a Matched</h2>
+
           <Form>
             <Form.Group as={Row} controlId="formHorizontalTz">
               <Form.Label column sm={2} />
@@ -61,74 +65,73 @@ export function AddMatched({ onAddedMatched }) {
                 <Form.Control
                   type="text"
                   placeholder="Identity number"
-                  value={addMatched.tz}
+                  value={addaMatched.tz}
                   onChange={handleAddMatched.bind(this, 'tz')}
                 />
               </Col>
             </Form.Group>
-
             <Form.Group as={Row} controlId="formHorizontalFirstName">
               <Form.Label column sm={2} />
               <Col sm={10}>
                 <Form.Control
                   type="text"
                   placeholder="First Name"
-                  value={addMatched.firstName}
+                  value={addaMatched.firstName}
                   onChange={handleAddMatched.bind(this, 'firstName')}
                 />
               </Col>
             </Form.Group>
-
             <Form.Group as={Row} controlId="formHorizontalLastName">
               <Form.Label column sm={2} />
               <Col sm={10}>
                 <Form.Control
                   type="text"
                   placeholder="Last Name"
-                  value={addMatched.lastName}
+                  value={addaMatched.lastName}
                   onChange={handleAddMatched.bind(this, 'lastName')}
                 />
               </Col>
             </Form.Group>
-
             <Form.Group as={Row} controlId="formHorizontalAge">
               <Form.Label column sm={2} />
               <Col sm={10}>
                 <Form.Control
                   type="number"
                   placeholder="Age"
-                  value={addMatched.age}
+                  value={addaMatched.age}
                   onChange={handleAddMatched.bind(this, 'age')}
                 />
               </Col>
             </Form.Group>
-
-            <Form.Group as={Row} controlId="formHorizontalTz">
-              <Form.Label column sm={2}>
+            {/* <h5>Birth date</h5> */}
+            <Form.Group as={Row} controlId="formHorizontalBirthdate">
+              <Form.Label column sm={10}>
                 Birth date
               </Form.Label>
               <Col sm={10}>
                 <Form.Control
                   type="date"
                   placeholder="Birthdate"
-                  value={addMatched.birthdate}
+                  value={addaMatched.birthdate}
                   onChange={handleAddMatched.bind(this, 'birthdate')}
                 />
               </Col>
             </Form.Group>
 
-            <fieldset>
+            {/* close form */}
+
+            <fieldset id="radio">
               <Form.Group as={Row}>
-                <Form.Label as="legend" column sm={2}>
-                  Gender
-                </Form.Label>
+                {/* <Form.Label as="legend" column sm={2}>
+                    Gender
+                  </Form.Label> */}
                 <Col sm={10}>
                   <Form.Check
                     type="radio"
                     label="male"
                     name="formHorizontalRadios"
                     id="formHorizontalRadios1"
-                    value={addMatched.gendar}
+                    value={addaMatched.gendar}
                     onSelect={handleAddMatched.bind(this, 'gendar')}
                   />
                   <Form.Check
@@ -136,62 +139,55 @@ export function AddMatched({ onAddedMatched }) {
                     label="female"
                     name="formHorizontalRadios"
                     id="formHorizontalRadios2"
-                    value={addMatched.gendar}
+                    value={addaMatched.gendar}
                     onSelect={handleAddMatched.bind(this, 'gendar')}
                   />
                 </Col>
               </Form.Group>
+              {/* </div> */}
             </fieldset>
-            <p>Famely state</p>
-            <select
-              value={addMatched.status}
+          </Form>
+          <div id="select">
+            <DropdownButton
+              id="dropdown-basic-button"
+              title="Famely state"
+              value={addaMatched.status}
               onChange={handleAddMatched.bind(this, 'status')}
             >
-              <option> </option>
-              <option>single</option>
-              <option>devorced</option>
-              <option>widower</option>
-            </select>
-            <br />
-            <br />
-            <Form.Group as={Row}>
-              <Col sm={{ span: 10, offset: 2 }}>
-                {/* <Button
-                  type="submit"
-                  onClick={click}
-                  // onClick={() => {
-                  //   // eslint-disable-next-line no-unused-expressions
-                  //   click();
-                  //   history.push('/HistoryPage');
-                  // }}
-                >
-                  אישור
-                </Button> */}
-                <HeaderLink onClick={click}>OK</HeaderLink>        
-                <HeaderLink to="/">Cancel</HeaderLink>
-              </Col>
-            </Form.Group>
-          </Form>
+              <Dropdown.Item eventKey="single">single</Dropdown.Item>
+              <Dropdown.Item eventKey="divorced">divorced</Dropdown.Item>
+              <Dropdown.Item eventKey="widower">widower</Dropdown.Item>
+            </DropdownButton>
+          </div>
+          <div id="b">
+            <HeaderLink className="bt" onClick={click}>
+              OK
+            </HeaderLink>
+            <HeaderLink className="bt" to="/">
+              Cancel
+            </HeaderLink>
+          </div>
         </div>
       ) : (
         true
       )}
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/HistoryPage" component={HistoryPage} />
-        <Route path="/MatchesView" component={MatchesView} />
-      </Switch>
+
       {alert ? (
         <Alert variant="success">
           <Alert.Heading>
             Your details have been successfully received!
           </Alert.Heading>
-          <HeaderLink to="/">
-            <FormattedMessage {...messages.HomePage} />
-          </HeaderLink>
-          <HeaderLink to="/MatchesView">
-            <FormattedMessage {...messages.MatchesView} />
-          </HeaderLink>
+          <div id="links">
+            <HeaderLink to="/">
+              <FormattedMessage {...messages.HomePage} />
+            </HeaderLink>
+            <HeaderLink to="/MatchesView">
+              <FormattedMessage {...messages.MatchesView} />
+            </HeaderLink>
+            <HeaderLink to="/HistoryPage">
+              <FormattedMessage {...messages.HistoryPage} />
+            </HeaderLink>
+          </div>
         </Alert>
       ) : (
         false

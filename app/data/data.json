@@ -32,7 +32,7 @@
         "lastName": "Bell",
         "age": 44,
         "gender": "male",
-        "birthdate": "30/12/2002",
+        "birthdate": "10/12/2002",
         "status": "divorced"
     },
     {
@@ -41,7 +41,7 @@
         "lastName": "Rhodes",
         "age": 17,
         "gender": "female",
-        "birthdate": "18/05/1998",
+        "birthdate": "11/05/1998",
         "status": "single"
     },
     {
@@ -68,7 +68,7 @@
         "lastName": "Coffey",
         "age": 36,
         "gender": "female",
-        "birthdate": "19/12/1995",
+        "birthdate": "10/12/1995",
         "status": "single"
     },
     {
@@ -86,7 +86,7 @@
         "lastName": "Owen",
         "age": 48,
         "gender": "female",
-        "birthdate": "22/02/2000",
+        "birthdate": "02/02/2000",
         "status": "widower"
     },
     {
@@ -131,7 +131,7 @@
         "lastName": "Bailey",
         "age": 20,
         "gender": "female",
-        "birthdate": "18/12/2000",
+        "birthdate": "11/12/2000",
         "status": "single"
     },
     {
@@ -140,7 +140,7 @@
         "lastName": "Chapman",
         "age": 33,
         "gender": "female",
-        "birthdate": "17/12/2000",
+        "birthdate": "10/12/2000",
         "status": "widower"
     },
     {
@@ -149,7 +149,7 @@
         "lastName": "Mckenzie",
         "age": 24,
         "gender": "male",
-        "birthdate": "29/12/2000",
+        "birthdate": "05/12/2000",
         "status": "divorced"
     },
     {
@@ -158,7 +158,7 @@
         "lastName": "Hendricks",
         "age": 32,
         "gender": "female",
-        "birthdate": "17/11/2000",
+        "birthdate": "10/11/2000",
         "status": "single"
     },
     {

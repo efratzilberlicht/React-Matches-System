@@ -1,0 +1,52 @@
+.alert-success {
+  //color: #24227e;
+  background-color: #cfa85f ;
+  border-color:#cfa85f ;
+  justify-content: center;
+}
+.h4{
+  color: #24227e;
+  text-align: center;
+  font-weight: 500;
+  font-size: xx-large;
+}
+.form-control {
+box-shadow: none;
+  border-color: #d1a146;
+  color: #d1a146 !important;  
+  width: 27%;  
+  margin-left: 26%;              
+}
+.form-control:focus {
+  box-shadow: none;
+  border-color: #d1a146;
+  color: #d1a146 !important;                  
+}
+// .form-control:target{
+//   background-color: white;;
+// }
+#links {
+  margin-left: 35%;
+}
+#form {
+ text-align: center;
+}
+#radio {
+  margin-left: 13%;
+}
+label {
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  color:#24227e;
+}
+#b {
+  margin-left: 43% !important;
+  position:absolute;
+}
+#select {
+  margin-right: 46%;
+  margin-bottom: 3%;
+}
+#formHorizontalBirthdate {
+  margin-left: 46.5%;
+}

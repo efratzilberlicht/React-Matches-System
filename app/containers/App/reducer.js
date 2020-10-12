@@ -5,6 +5,7 @@ import {
   LOAD_MATCH_SUCCESS,
   LOAD_MATCH_ERROR,
   ADD_MATCH,
+  GET_MATCH,
   UPDATE_MATCH,
 } from './constants';
 
@@ -13,14 +14,18 @@ export const initialState = {
   loading: false,
   error: false,
   matches: data.default,
+  currentMatched: false,
 };
 // mock functions
-function updateMatched(matchesList, updatedMatched) {
+function getMatched(matchesList, matchedTz) {
+  const currentMatched = matchesList.find(matched => matched.tz === matchedTz);
+  return currentMatched;
+}
+
+function updateMatched(matchesList, matchedTz) {
+  debugger;
   const newMatchesList = [...matchesList];
-  const currentMatchedIndex = matchesList.findIndex(
-    match => match.tz === updatedMatched.tz,
-  );
-  newMatchesList[currentMatchedIndex] = updatedMatched;
+  newMatchesList.find(match => match.tz === matchedTz).status = 'married';
   return newMatchesList;
 }
 
@@ -51,12 +56,17 @@ const appReducer = (state = initialState, action) =>
         draft.loading = false;
         break;
 
+      case GET_MATCH:
+        draft.currentMatched = getMatched(state.people, action.matchedTz);
+        break;
+
       case ADD_MATCH:
         draft.matches = addMatched(state.matches, action.matched);
         break;
 
       case UPDATE_MATCH:
-        draft.matches = updateMatched(state.matches, action.match);
+        draft.matches = updateMatched(state.matches, action.matchedTz);
+        draft.currentMatched = action.match;
         break;
     }
   });
