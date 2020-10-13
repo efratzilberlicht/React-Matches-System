@@ -52,11 +52,11 @@ router.post('/add', (req, res) => {
   });
 });
 
-router.post('/update/:id', (req, res) => {
+router.post('/update', (req, res) => {
   fs.readFile(jsonPath, 'utf8', (err, data) => {
     const list = JSON.parse(data);
-    const { id } = req.params;
-    const newList = _updateItem(list, id);
+    const { item } = req.params;
+    const newList = _updateItem(list, item);
     const jsonData = JSON.stringify(newList);
 
     fs.writeFile(jsonPath, jsonData, writeFileErr => {

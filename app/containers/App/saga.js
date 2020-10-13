@@ -37,18 +37,18 @@ export function* get(action) {
 }
 
 export function* update(action) {
-  const requestURL = `${baseUrl}/update/${action.matchedId}`;
+  const requestURL = `${baseUrl}/update/${action.matched}`;
   const options = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(action.matchedId),
+    body: JSON.stringify(action.matched),
   };
   try {
     const list = yield call(request, requestURL, options);
     debugger;
-    yield put(updateMatchedSuccess(action.matchedId, list));
+    yield put(updateMatchedSuccess(action.matched, list));
   } catch (err) {
     yield put(updateMatchedError(err));
   }

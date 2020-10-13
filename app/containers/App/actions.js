@@ -96,10 +96,10 @@ export function addMatchedError(error) {
   };
 }
 // UPDATE MATCHED
-export function updateMatched(matchedId) {
+export function updateMatched(matched) {
   return {
     type: UPDATE_MATCH,
-    matchedId,
+    matched,
   };
 }
 
