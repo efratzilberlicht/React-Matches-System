@@ -30,7 +30,7 @@ export function MatchesView({ matches, onUpdateMatched }) {
       setUpdatedMale(firstName, lastName);
     } else {
       setUpdatedFemale(firstName, lastName);
-      //debugger;
+      // debugger;
       onUpdateMatched(id);
     }
   }
@@ -93,14 +93,13 @@ export function MatchesView({ matches, onUpdateMatched }) {
         </DropdownButton>
       </div>
 
-        <HeaderLink id="match" className="btn" to="/HistoryPage">
-          Match
-        </HeaderLink>
+      <HeaderLink id="match" className="btn" to="/HistoryPage">
+        Match
+      </HeaderLink>
 
-        <HeaderLink id="cancel" className="bt" onClick={cancel}>
-          Cancel
-        </HeaderLink>
-      
+      <HeaderLink id="cancel" className="bt" onClick={cancel}>
+        Cancel
+      </HeaderLink>
     </div>
   );
 }
