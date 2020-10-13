@@ -10,9 +10,8 @@ export default function MatchCard(props) {
           {props.match.firstName} {props.match.lastName}
         </Card.Title>
         <Card.Text className="text">
-          {props.match.tz} ,{props.match.gender} ,{props.match.status},{' '} 
-          {props.match.age} , {props.match.birthdate}  
-          
+          {props.match.id} ,{props.match.gender} ,{props.match.status},{' '}
+          {props.match.age} , {props.match.birthdate}
         </Card.Text>
       </Card.Body>
     </Card>

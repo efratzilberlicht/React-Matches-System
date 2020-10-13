@@ -1,6 +1,5 @@
-import { FormattedMessage } from 'react-intl';
-import React, { memo, useState, useEffect } from 'react';
-import PropTypes, { func } from 'prop-types';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
@@ -11,7 +10,6 @@ import {
   Form,
   Col,
   Row,
-  Button,
   Alert,
   DropdownButton,
   Dropdown,
@@ -19,7 +17,6 @@ import {
 import HeaderLink from 'components/Header/HeaderLink';
 import { makeSelectError } from 'containers/App/selectors';
 import { addMatched } from 'containers/App/actions';
-import messages from 'components/Header/messages';
 import makeSelectAddMatched from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -27,25 +24,34 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.scss';
 
 export function AddMatched({ onAddedMatched }) {
+  document.body.style.overflow = 'hidden';
   useInjectReducer({ key: 'addMatched', reducer });
   useInjectSaga({ key: 'addMatched', saga });
-  // to add a matched
   const [addaMatched, setAddaMatched] = useState(false);
-  // to show all the form
   const [addMatch, setAddMatch] = useState(true);
   const [alert, setalert] = useState(false);
+  const [Status, setStatus] = useState('Famely state');
   const click = () => {
     onAddedMatched(addaMatched);
-    // debugger;
     setAddMatch(false);
     setalert(true);
   };
+  const cancel = () => {
+    Form.clearValue();
+  };
 
-  function handleAddMatched(propertyName, event) {
+  const handleAddMatched = event => {
     const matched = { ...addaMatched };
-    matched[propertyName] = event.target.value;
+    if (event === 'single' || event === 'divorced' || event === 'widower') {
+      matched.status = event;
+      setStatus(event);
+    } else if (event.target.name === 'gender') {
+      matched[event.target.name] = event.target.id;
+    } else {
+      matched[event.target.name] = event.target.value;
+    }
     setAddaMatched(matched);
-  }
+  };
 
   return (
     <div>
@@ -59,14 +65,14 @@ export function AddMatched({ onAddedMatched }) {
           <h2>Add a Matched</h2>
 
           <Form>
-            <Form.Group as={Row} controlId="formHorizontalTz">
+            <Form.Group as={Row} controlId="formHorizontalId">
               <Form.Label column sm={2} />
               <Col sm={10}>
                 <Form.Control
+                  name="id"
                   type="text"
                   placeholder="Identity number"
-                  value={addaMatched.tz}
-                  onChange={handleAddMatched.bind(this, 'tz')}
+                  onChange={handleAddMatched}
                 />
               </Col>
             </Form.Group>
@@ -74,10 +80,10 @@ export function AddMatched({ onAddedMatched }) {
               <Form.Label column sm={2} />
               <Col sm={10}>
                 <Form.Control
+                  name="firstName"
                   type="text"
                   placeholder="First Name"
-                  value={addaMatched.firstName}
-                  onChange={handleAddMatched.bind(this, 'firstName')}
+                  onChange={handleAddMatched}
                 />
               </Col>
             </Form.Group>
@@ -85,10 +91,10 @@ export function AddMatched({ onAddedMatched }) {
               <Form.Label column sm={2} />
               <Col sm={10}>
                 <Form.Control
+                  name="lastName"
                   type="text"
                   placeholder="Last Name"
-                  value={addaMatched.lastName}
-                  onChange={handleAddMatched.bind(this, 'lastName')}
+                  onChange={handleAddMatched}
                 />
               </Col>
             </Form.Group>
@@ -96,74 +102,71 @@ export function AddMatched({ onAddedMatched }) {
               <Form.Label column sm={2} />
               <Col sm={10}>
                 <Form.Control
+                  name="age"
                   type="number"
                   placeholder="Age"
-                  value={addaMatched.age}
-                  onChange={handleAddMatched.bind(this, 'age')}
+                  onChange={handleAddMatched}
                 />
               </Col>
             </Form.Group>
-            {/* <h5>Birth date</h5> */}
             <Form.Group as={Row} controlId="formHorizontalBirthdate">
               <Form.Label column sm={10}>
                 Birth date
               </Form.Label>
               <Col sm={10}>
                 <Form.Control
+                  name="birthdate"
                   type="date"
                   placeholder="Birthdate"
-                  value={addaMatched.birthdate}
-                  onChange={handleAddMatched.bind(this, 'birthdate')}
+                  onChange={handleAddMatched}
                 />
               </Col>
             </Form.Group>
 
-            {/* close form */}
-
             <fieldset id="radio">
               <Form.Group as={Row}>
-                {/* <Form.Label as="legend" column sm={2}>
-                    Gender
-                  </Form.Label> */}
                 <Col sm={10}>
                   <Form.Check
                     type="radio"
                     label="male"
-                    name="formHorizontalRadios"
-                    id="formHorizontalRadios1"
-                    value={addaMatched.gendar}
-                    onSelect={handleAddMatched.bind(this, 'gendar')}
+                    name="gender"
+                    id="male"
+                    onChange={handleAddMatched}
                   />
                   <Form.Check
                     type="radio"
                     label="female"
-                    name="formHorizontalRadios"
-                    id="formHorizontalRadios2"
-                    value={addaMatched.gendar}
-                    onSelect={handleAddMatched.bind(this, 'gendar')}
+                    name="gender"
+                    id="female"
+                    onChange={handleAddMatched}
                   />
                 </Col>
               </Form.Group>
-              {/* </div> */}
             </fieldset>
           </Form>
           <div id="select">
             <DropdownButton
+              name="status"
               id="dropdown-basic-button"
-              title="Famely state"
-              value={addaMatched.status}
-              onChange={handleAddMatched.bind(this, 'status')}
+              title={Status}
+              onSelect={handleAddMatched}
             >
-              <Dropdown.Item eventKey="single">single</Dropdown.Item>
-              <Dropdown.Item eventKey="divorced">divorced</Dropdown.Item>
-              <Dropdown.Item eventKey="widower">widower</Dropdown.Item>
+              <Dropdown.Item name="status" eventKey="single">
+                single
+              </Dropdown.Item>
+              <Dropdown.Item name="status" eventKey="divorced">
+                divorced
+              </Dropdown.Item>
+              <Dropdown.Item name="status" eventKey="widower">
+                widower
+              </Dropdown.Item>
             </DropdownButton>
           </div>
           <div id="b">
             <HeaderLink className="bt" onClick={click}>
               OK
             </HeaderLink>
-            <HeaderLink className="bt" to="/">
+            <HeaderLink className="bt" onClick={cancel}>
               Cancel
             </HeaderLink>
           </div>
@@ -177,17 +180,6 @@ export function AddMatched({ onAddedMatched }) {
           <Alert.Heading>
             Your details have been successfully received!
           </Alert.Heading>
-          <div id="links">
-            <HeaderLink to="/">
-              <FormattedMessage {...messages.HomePage} />
-            </HeaderLink>
-            <HeaderLink to="/MatchesView">
-              <FormattedMessage {...messages.MatchesView} />
-            </HeaderLink>
-            <HeaderLink to="/HistoryPage">
-              <FormattedMessage {...messages.HistoryPage} />
-            </HeaderLink>
-          </div>
         </Alert>
       ) : (
         false
@@ -197,7 +189,6 @@ export function AddMatched({ onAddedMatched }) {
 }
 
 AddMatched.propTypes = {
-  matches: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   onAddedMatched: PropTypes.func,
 };
 

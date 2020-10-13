@@ -3,8 +3,14 @@ import {
   LOAD_MATCH_SUCCESS,
   LOAD_MATCH_ERROR,
   ADD_MATCH,
+  ADD_MATCH_SUCCESS,
+  ADD_MATCH_ERROR,
   GET_MATCH,
+  GET_MATCH_SUCCESS,
+  GET_MATCH_ERROR,
   UPDATE_MATCH,
+  UPDATE_MATCH_SUCCESS,
+  UPDATE_MATCH_ERROR,
 } from './constants';
 
 /**
@@ -46,11 +52,25 @@ export function matchesLoadingError(error) {
     error,
   };
 }
-// GET MATVHED
-export function getMatched(matchedTz) {
+// GET MATCHED
+export function getMatched(matchedId) {
   return {
     type: GET_MATCH,
-    matchedTz,
+    matchedId,
+  };
+}
+
+export function getMatchedSuccess(matched) {
+  return {
+    type: GET_MATCH_SUCCESS,
+    matched,
+  };
+}
+
+export function getMatchedError(error) {
+  return {
+    type: GET_MATCH_ERROR,
+    error,
   };
 }
 // ADD MATCHED
@@ -60,10 +80,40 @@ export function addMatched(matched) {
     matched,
   };
 }
+
+export function addMatchedSuccess(matched, matches) {
+  return {
+    type: ADD_MATCH_SUCCESS,
+    matched,
+    matches,
+  };
+}
+
+export function addMatchedError(error) {
+  return {
+    type: ADD_MATCH_ERROR,
+    error,
+  };
+}
 // UPDATE MATCHED
-export function updateMatched(matchedTz) {
+export function updateMatched(matchedId) {
   return {
     type: UPDATE_MATCH,
-    matchedTz,
+    matchedId,
+  };
+}
+
+export function updateMatchedSuccess(matched, matches) {
+  return {
+    type: UPDATE_MATCH_SUCCESS,
+    matched,
+    matches,
+  };
+}
+
+export function updateMatchedError(error) {
+  return {
+    type: UPDATE_MATCH_ERROR,
+    error,
   };
 }

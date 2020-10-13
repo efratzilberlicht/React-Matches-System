@@ -1,22 +1,21 @@
 import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { Helmet } from 'react-helmet';
-// import styled from 'styled-components';
 import { compose } from 'redux';
 import { createStructuredSelector } from 'reselect';
 import { makeSelectMatches } from 'containers/App/selectors';
 import { DropdownButton, Dropdown, CardColumns } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.scss';
-// eslint-disable-next-line import/no-named-as-default-member
-import { set } from 'lodash';
 import MatchCard from './MatchCard';
 
 export function HistoryPage({ matches }) {
-  const [sortedMatches, setSortedMatches] = useState(renderMatchesList());
+  const [sortedMatches, setSortedMatches] = useState(
+    renderMatchesList(matches),
+  );
 
   function pickMatchesList(button, choose) {
+    debugger;
     switch (button) {
       case 'status':
         sortByStatus(choose);
@@ -55,10 +54,13 @@ export function HistoryPage({ matches }) {
   }
 
   function renderMatchesList(sortedMatchesList = matches) {
-    return sortedMatchesList.map(match => (
-      <MatchCard key={match.tz} match={match} />
-    ));
+    debugger;
+    return (
+      sortedMatchesList &&
+      sortedMatchesList.map(match => <MatchCard key={match.id} match={match} />)
+    );
   }
+
   return (
     <div className="container">
       <h2>Matches History</h2>
@@ -76,7 +78,6 @@ export function HistoryPage({ matches }) {
         <DropdownButton
           id="dropdown-basic-button"
           title="Sort by birthdate"
-          // value="date"
           onSelect={e => {
             pickMatchesList('date', e);
           }}
@@ -94,6 +95,7 @@ export function HistoryPage({ matches }) {
           <Dropdown.Item eventKey="single">single</Dropdown.Item>
           <Dropdown.Item eventKey="divorced">divorced</Dropdown.Item>
           <Dropdown.Item eventKey="widower">widower</Dropdown.Item>
+          <Dropdown.Item eventKey="married">married</Dropdown.Item>
         </DropdownButton>
       </div>
       <div id="list">

@@ -4,37 +4,34 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { updateMatched, getMatched } from 'containers/App/actions';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { makeSelectMatches } from 'containers/App/selectors';
-import { DropdownButton, Menu, Dropdown, HeaderLink } from 'react-bootstrap';
+import { DropdownButton, Dropdown } from 'react-bootstrap';
 import reducer from 'containers/App/reducer';
-import makeSelectMatchesView from './selectors';
-// eslint-disable-next-line no-redeclare
-// import HeaderLink from 'components/Header/HeaderLink';
+import HeaderLink from 'components/Header/HeaderLink';
 import saga from './saga';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.scss';
-// eslint-disable-next-line import/order
-import history from 'utils/history';
-// eslint-disable-next-line import/order
-import { updateMatched, getMatched } from 'containers/App/actions';
-// import { getMatched } from './App/actions';
 
 export function MatchesView({ matches, onUpdateMatched }) {
   const [updatedMale, setUpdatedMale] = useState('male');
   const [updatedFemale, setUpdatedFemale] = useState('female');
-
+  const cancel = () => {
+    updatedMale.clearValue();
+    updatedFemale.clearValue();
+  };
   useInjectReducer({ key: 'matchesView', reducer });
   useInjectSaga({ key: 'matchesView', saga });
 
-  function handleChange({ tz, firstName, lastName, gender }) {
+  function handleChange({ id, firstName, lastName, gender }) {
     if (gender === 'male') {
       setUpdatedMale(firstName, lastName);
     } else {
       setUpdatedFemale(firstName, lastName);
-      debugger;
-      onUpdateMatched(tz);
+      //debugger;
+      onUpdateMatched(id);
     }
   }
 
@@ -54,20 +51,21 @@ export function MatchesView({ matches, onUpdateMatched }) {
             console.log(JSON.parse(eventKey));
           }}
         >
-          {matches
-            .filter(
-              matched =>
-                matched.gender === 'male' && matched.status !== 'married',
-            )
-            .map(matched => (
-              <Dropdown.Item
-                id="dropItem"
-                eventKey={JSON.stringify(matched)}
-                key={matched.tz}
-              >
-                {matched.firstName} {matched.lastName} {matched.status}
-              </Dropdown.Item>
-            ))}
+          {matches &&
+            matches
+              .filter(
+                matched =>
+                  matched.gender === 'male' && matched.status !== 'married',
+              )
+              .map(matched => (
+                <Dropdown.Item
+                  id="dropItem"
+                  eventKey={JSON.stringify(matched)}
+                  key={matched.id}
+                >
+                  {matched.firstName} {matched.lastName} {matched.status}
+                </Dropdown.Item>
+              ))}
         </DropdownButton>
 
         <DropdownButton
@@ -77,40 +75,32 @@ export function MatchesView({ matches, onUpdateMatched }) {
             handleChange(JSON.parse(eventKey));
           }}
         >
-          {matches
-            .filter(
-              matched =>
-                matched.gender === 'female' && matched.status !== 'married',
-            )
-            .map(matched => (
-              <Dropdown.Item
-                id="dropItem"
-                eventKey={JSON.stringify(matched)}
-                key={matched.tz}
-              >
-                {matched.firstName} {matched.lastName} {matched.status}
-              </Dropdown.Item>
-            ))}
+          {matches &&
+            matches
+              .filter(
+                matched =>
+                  matched.gender === 'female' && matched.status !== 'married',
+              )
+              .map(matched => (
+                <Dropdown.Item
+                  id="dropItem"
+                  eventKey={JSON.stringify(matched)}
+                  key={matched.id}
+                >
+                  {matched.firstName} {matched.lastName} {matched.status}
+                </Dropdown.Item>
+              ))}
         </DropdownButton>
       </div>
-      <div id="button">
-        {/* <HeaderLink className="btn" to="/HistoryPage">
+
+        <HeaderLink id="match" className="btn" to="/HistoryPage">
           Match
         </HeaderLink>
-        <HeaderLink className="btn" to="/">
+
+        <HeaderLink id="cancel" className="bt" onClick={cancel}>
           Cancel
-        </HeaderLink> */}
-        <button type="submit" className="btn" onClick={() => history.push('/')}>
-          Cancel
-        </button>
-        <button
-          type="submit"
-          className="btn"
-          onClick={() => history.push('/HistoryPage')}
-        >
-          Match
-        </button>
-      </div>
+        </HeaderLink>
+      
     </div>
   );
 }
@@ -127,8 +117,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    onSelectMatched: matchedTz => dispatch(getMatched(matchedTz)),
-    onUpdateMatched: matchedTz => dispatch(updateMatched(matchedTz)),
+    onSelectMatched: matchedId => dispatch(getMatched(matchedId)),
+    onUpdateMatched: matchedId => dispatch(updateMatched(matchedId)),
   };
 }
 
