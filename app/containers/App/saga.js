@@ -37,7 +37,7 @@ export function* get(action) {
 }
 
 export function* update(action) {
-  const requestURL = `${baseUrl}/update/${action.matched}`;
+  const requestURL = `${baseUrl}/update`;
   const options = {
     method: 'POST',
     headers: {

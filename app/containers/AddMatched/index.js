@@ -45,10 +45,9 @@ export function AddMatched({ onAddedMatched }) {
     if (event === 'single' || event === 'divorced' || event === 'widower') {
       matched.status = event;
       setStatus(event);
-    } else if (event.target.name === 'gender') {
-      matched[event.target.name] = event.target.id;
     } else {
-      matched[event.target.name] = event.target.value;
+      matched[event.target.name] =
+        event.target.name === 'gender' ? event.target.id : event.target.value;
     }
     setAddaMatched(matched);
   };

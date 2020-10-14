@@ -52,10 +52,28 @@ router.post('/add', (req, res) => {
   });
 });
 
+// router.post('/update', (req, res) => {
+//   fs.readFile(jsonPath, 'utf8', (err, data) => {
+//     const list = JSON.parse(data);
+//     const { item } = req.params;
+//     const newList = _updateItem(list, item);
+//     const jsonData = JSON.stringify(newList);
+
+//     fs.writeFile(jsonPath, jsonData, writeFileErr => {
+//       if (!writeFileErr) {
+//         res.end(jsonData);
+//       } else {
+//         res.end(data);
+//       }
+//     });
+//   });
+// });
+
 router.post('/update', (req, res) => {
   fs.readFile(jsonPath, 'utf8', (err, data) => {
+    debugger;
     const list = JSON.parse(data);
-    const { item } = req.params;
+    const item = req.body;
     const newList = _updateItem(list, item);
     const jsonData = JSON.stringify(newList);
 
@@ -75,9 +93,10 @@ router.post('/delete/:id', (req, res) => {
     const { id } = req.params;
     const newList = _deleteItem(list, id);
     const jsonData = JSON.stringify(newList);
-
+    debugger;
     fs.writeFile(jsonPath, jsonData, writeFileErr => {
       if (!writeFileErr) {
+        debugger;
         res.end(jsonData);
       } else {
         res.end(data);
@@ -92,9 +111,11 @@ const _getItem = (list, id) => {
   return currentItem;
 };
 
-const _updateItem = (list, updatedItemId) => {
+const _updateItem = (list, updatedItem) => {
   const newList = [...list];
-  newList.find(item => item.id === updatedItemId).status = 'married';
+  newList.findIndex(
+    item => item.id.toString() === updatedItem.id.toString(),
+  ).status = 'married';
   return newList;
 };
 

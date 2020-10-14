@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -9,22 +9,25 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.scss';
 import MatchCard from './MatchCard';
 
+const STATUS = ['married', 'single', 'divorced', 'widower'];
+const ORDER = ['increase order', 'decrease order'];
+
 export function HistoryPage({ matches }) {
-  const [sortedMatches, setSortedMatches] = useState(
-    renderMatchesList(matches),
-  );
+  const [sortedMatches, setSortedMatches] = useState([]);
+
+  useEffect(() => {
+    if (!sortedMatches.length && matches) {
+      setSortedMatches(renderMatchesList());
+    }
+  });
 
   function pickMatchesList(button, choose) {
-    debugger;
     switch (button) {
       case 'status':
         sortByStatus(choose);
         break;
       case 'date':
         sortByBirthdate(choose);
-        break;
-      case 'originalList':
-        renderoriginList();
         break;
       default:
         renderoriginList();
@@ -43,7 +46,7 @@ export function HistoryPage({ matches }) {
     const sortedMatchesList = matches.sort(
       (a, b) => new Date(b.birthdate) - new Date(a.birthdate),
     );
-    if (order === 'increase') {
+    if (order === 'increase order') {
       sortedMatchesList.reverse();
     }
     setSortedMatches(renderMatchesList(sortedMatchesList));
@@ -54,10 +57,25 @@ export function HistoryPage({ matches }) {
   }
 
   function renderMatchesList(sortedMatchesList = matches) {
-    debugger;
     return (
       sortedMatchesList &&
       sortedMatchesList.map(match => <MatchCard key={match.id} match={match} />)
+    );
+  }
+
+  function getDropDown(title, type, ITEMS) {
+    return (
+      <DropdownButton
+        id="dropdown-basic-button"
+        title={title}
+        onSelect={e => {
+          pickMatchesList(type, e);
+        }}
+      >
+        {ITEMS.map(item => (
+          <Dropdown.Item eventKey={item}>{item}</Dropdown.Item>
+        ))}
+      </DropdownButton>
     );
   }
 
@@ -75,32 +93,16 @@ export function HistoryPage({ matches }) {
         >
           Back to the original list
         </button>
-        <DropdownButton
-          id="dropdown-basic-button"
-          title="Sort by birthdate"
-          onSelect={e => {
-            pickMatchesList('date', e);
-          }}
-        >
-          <Dropdown.Item eventKey="increase">increase order</Dropdown.Item>
-          <Dropdown.Item eventKey="decrease">decrease order</Dropdown.Item>
-        </DropdownButton>
-        <DropdownButton
-          id="dropdown-basic-button"
-          title="Sort by status"
-          onSelect={e => {
-            pickMatchesList('status', e);
-          }}
-        >
-          <Dropdown.Item eventKey="single">single</Dropdown.Item>
-          <Dropdown.Item eventKey="divorced">divorced</Dropdown.Item>
-          <Dropdown.Item eventKey="widower">widower</Dropdown.Item>
-          <Dropdown.Item eventKey="married">married</Dropdown.Item>
-        </DropdownButton>
+
+        {getDropDown('Sort by birthdate', 'date', ORDER)}
+        {getDropDown('Sort by status', 'status', STATUS)}
       </div>
-      <div id="list">
-        <CardColumns>{sortedMatches}</CardColumns>
-      </div>
+
+      {sortedMatches && (
+        <div id="list">
+          <CardColumns>{sortedMatches}</CardColumns>
+        </div>
+      )}
     </div>
   );
 }

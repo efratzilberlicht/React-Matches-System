@@ -17,42 +17,61 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.scss';
 
 export function MatchesView({ matches, onUpdateMatched }) {
-  const [Male, setMale] = useState('male');
-  const [Female, setFemale] = useState('female');
-  const [updatedMale, setUpdatedMale] = useState(false);
-  const [updatedFemale, setUpdatedFemale] = useState(false);
+  // const [Male, setMale] = useState('male');
+  // const [Female, setFemale] = useState('female');
+  const [updatedMale, setUpdatedMale] = useState({
+    firstName: 'male',
+    lastName: '',
+  });
+  const [updatedFemale, setUpdatedFemale] = useState({
+    firstName: 'female',
+    lastName: '',
+  });
+
+  useInjectReducer({ key: 'matchesView', reducer });
+  useInjectSaga({ key: 'matchesView', saga });
+
   const cancel = () => {
-    Male.clearValue();
-    Female.clearValue();
+    updatedMale.clearValue();
+    updatedFemale.clearValue();
   };
   const match = () => {
     onUpdateMatched(updatedMale);
     onUpdateMatched(updatedFemale);
     history.push('/HistoryPage');
   };
-  useInjectReducer({ key: 'matchesView', reducer });
-  useInjectSaga({ key: 'matchesView', saga });
 
-  // function handleChange({ id, firstName, lastName, gender }) {
-  //   if (gender === 'male') {
-  //     setMale(firstName, lastName);
-  //   } else {
-  //     setFemale(firstName, lastName);
-  //     // debugger;
-  //     onUpdateMatched(id);
-  //   }
-  // }
+  const handleChange = matched =>
+    matched.gender === 'male'
+      ? setUpdatedMale(matched)
+      : setUpdatedFemale(matched);
 
-  function handleChange(matched) {
-    if (matched.gender === 'male') {
-      setMale(matched.firstName, matched.lastName);
-      setUpdatedMale(matched);
-    } else {
-      setFemale(matched.firstName, matched.lastName);
-      setUpdatedFemale(matched);
-      //debugger;
-      //onUpdateMatched(matched);
-    }
+  function getDropDown(updatedMatched, gender) {
+    return (
+      <DropdownButton
+        id="dropdown-basic-button"
+        title={`${updatedMatched.firstName} ${updatedMatched.lastName}`}
+        onSelect={eventKey => {
+          handleChange(JSON.parse(eventKey));
+        }}
+      >
+        {matches &&
+          matches
+            .filter(
+              matched =>
+                matched.gender === gender && matched.status !== 'married',
+            )
+            .map(matched => (
+              <Dropdown.Item
+                id="dropItem"
+                eventKey={JSON.stringify(matched)}
+                key={matched.id}
+              >
+                {matched.firstName} {matched.lastName} {matched.status}
+              </Dropdown.Item>
+            ))}
+      </DropdownButton>
+    );
   }
 
   return (
@@ -61,55 +80,12 @@ export function MatchesView({ matches, onUpdateMatched }) {
         <title>Matches View</title>
         <meta name="description" content="Description of MatchesView" />
       </Helmet>
-      <h2>Matches View</h2>
-      <div id="button">
-        <DropdownButton
-          id="dropdown-basic-button"
-          title={Male}
-          onSelect={eventKey => {
-            handleChange(JSON.parse(eventKey));
-          }}
-        >
-          {matches &&
-            matches
-              .filter(
-                matched =>
-                  matched.gender === 'male' && matched.status !== 'married',
-              )
-              .map(matched => (
-                <Dropdown.Item
-                  id="dropItem"
-                  eventKey={JSON.stringify(matched)}
-                  key={matched.id}
-                >
-                  {matched.firstName} {matched.lastName} {matched.status}
-                </Dropdown.Item>
-              ))}
-        </DropdownButton>
 
-        <DropdownButton
-          id="dropdown-basic-button"
-          title={Female}
-          onSelect={eventKey => {
-            handleChange(JSON.parse(eventKey));
-          }}
-        >
-          {matches &&
-            matches
-              .filter(
-                matched =>
-                  matched.gender === 'female' && matched.status !== 'married',
-              )
-              .map(matched => (
-                <Dropdown.Item
-                  id="dropItem"
-                  eventKey={JSON.stringify(matched)}
-                  key={matched.id}
-                >
-                  {matched.firstName} {matched.lastName} {matched.status}
-                </Dropdown.Item>
-              ))}
-        </DropdownButton>
+      <h2>Matches View</h2>
+
+      <div id="button">
+        {getDropDown(updatedMale, 'male')}
+        {getDropDown(updatedFemale, 'female')}
       </div>
 
       <HeaderLink id="match" className="btn" onClick={match}>
