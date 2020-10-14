@@ -17,8 +17,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.scss';
 
 export function MatchesView({ matches, onUpdateMatched }) {
-  // const [Male, setMale] = useState('male');
-  // const [Female, setFemale] = useState('female');
+  document.body.style.overflow = 'hidden';
   const [updatedMale, setUpdatedMale] = useState({
     firstName: 'male',
     lastName: '',
@@ -49,7 +48,7 @@ export function MatchesView({ matches, onUpdateMatched }) {
   function getDropDown(updatedMatched, gender) {
     return (
       <DropdownButton
-        id="dropdown-basic-button"
+        id="dropdown-basic-button1"
         title={`${updatedMatched.firstName} ${updatedMatched.lastName}`}
         onSelect={eventKey => {
           handleChange(JSON.parse(eventKey));
@@ -88,13 +87,14 @@ export function MatchesView({ matches, onUpdateMatched }) {
         {getDropDown(updatedFemale, 'female')}
       </div>
 
-      <HeaderLink id="match" className="btn" onClick={match}>
-        Match
-      </HeaderLink>
-
-      <HeaderLink id="cancel" className="bt" onClick={cancel}>
-        Cancel
-      </HeaderLink>
+      <div id="bt">
+        <HeaderLink className="bt" to="" onClick={match}>
+          Match
+        </HeaderLink>
+        <HeaderLink className="bt" to="" onClick={cancel}>
+          Cancel
+        </HeaderLink>
+      </div>
     </div>
   );
 }
