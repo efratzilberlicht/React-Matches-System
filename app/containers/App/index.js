@@ -15,12 +15,13 @@ import AddMatch from 'containers/AddMatched';
 import MatchesView from 'containers/MatchesView';
 import HistoryPage from 'components/HistoryPage';
 import Header from 'components/Header';
+import ErrorBoundary from 'components/ErrorBoundary';
 import { useInjectSaga } from 'utils/injectSaga';
 import { loadMatches } from './actions';
 import saga from './saga';
 import 'style.scss';
 
-export function App({ matches, loading, error, onLoadMatches }) {
+export function App({ matches, error, onLoadMatches }) {
   useInjectSaga({ key: 'App', saga });
   useEffect(() => {
     if (!matches) onLoadMatches();
@@ -35,7 +36,6 @@ export function App({ matches, loading, error, onLoadMatches }) {
         <meta name="description" content="A React.js Boilerplate application" />
       </Helmet>
       <Header />
-      {/* {loading && <div className="loading">loading...</div>} */}
       {error && <div className="error">error occured</div>}
       <Switch>
         <Route exact path="/" component={HomePage} />
@@ -49,7 +49,6 @@ export function App({ matches, loading, error, onLoadMatches }) {
 
 App.propTypes = {
   matches: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  loading: PropTypes.bool,
   error: PropTypes.oneOfType([PropTypes.object, PropTypes.bool]),
   onLoadMatches: PropTypes.func,
 };

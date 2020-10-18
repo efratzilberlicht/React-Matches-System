@@ -73,7 +73,9 @@ export function HistoryPage({ matches }) {
         }}
       >
         {ITEMS.map(item => (
-          <Dropdown.Item eventKey={item}>{item}</Dropdown.Item>
+          <Dropdown.Item eventKey={item} key={item}>
+            {item}
+          </Dropdown.Item>
         ))}
       </DropdownButton>
     );

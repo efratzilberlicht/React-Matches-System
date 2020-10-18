@@ -16,10 +16,9 @@ const baseUrl = '/api';
 
 export function* getList() {
   const requestURL = `${baseUrl}/list`;
-
   try {
-    const matchesList = yield call(request, requestURL);
-    yield put(matchesLoaded(matchesList));
+    const list = yield call(request, requestURL);
+    yield put(matchesLoaded(list));
   } catch (err) {
     yield put(matchesLoadingError(err));
   }
@@ -37,7 +36,7 @@ export function* get(action) {
 }
 
 export function* update(action) {
-  const requestURL = `${baseUrl}/update`;
+  const requestURL = `${baseUrl}/update/${action.matchedId}`;
   const options = {
     method: 'POST',
     headers: {
@@ -47,8 +46,7 @@ export function* update(action) {
   };
   try {
     const list = yield call(request, requestURL, options);
-    debugger;
-    yield put(updateMatchedSuccess(action.matched, list));
+    yield put(updateMatchedSuccess(action.matchedId, list));
   } catch (err) {
     yield put(updateMatchedError(err));
   }

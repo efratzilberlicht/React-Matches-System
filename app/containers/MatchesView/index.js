@@ -17,7 +17,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.scss';
 
 export function MatchesView({ matches, onUpdateMatched }) {
-  document.body.style.overflow = 'hidden';
   const [updatedMale, setUpdatedMale] = useState({
     firstName: 'male',
     lastName: '',
@@ -35,8 +34,8 @@ export function MatchesView({ matches, onUpdateMatched }) {
     updatedFemale.clearValue();
   };
   const match = () => {
-    onUpdateMatched(updatedMale);
-    onUpdateMatched(updatedFemale);
+    onUpdateMatched(updatedMale.id);
+    onUpdateMatched(updatedFemale.id);
     history.push('/HistoryPage');
   };
 
@@ -88,10 +87,10 @@ export function MatchesView({ matches, onUpdateMatched }) {
       </div>
 
       <div id="bt">
-        <HeaderLink className="bt" to="" onClick={match}>
+        <button type="submit" id="match" onClick={match}>
           Match
-        </HeaderLink>
-        <HeaderLink className="bt" to="" onClick={cancel}>
+        </button>
+        <HeaderLink className="bt" to="/MatchesView " onClick={cancel}>
           Cancel
         </HeaderLink>
       </div>

@@ -1,102 +1,119 @@
 
-import { call, put, takeLatest, takeEvery } from 'redux-saga/effects';
-import request from 'utils/request';
-import {
-  LOAD_PERSON,
-  GET_PERSON,
-  ADD_PERSON,
-  DELETE_PERSON,
-  UPDATE_PERSON,
-} from './constants';
-import {
-  peopleLoaded,
-  personLoadingError,
-  getPersonSuccess,
-  getPersonError,
-  addPersonSuccess,
-  addPersonError,
-  updatePersonSuccess,
-  updatePersonError,
-  deletePersonSuccess,
-  deletePersonError,
-} from './actions';
-const baseUrl = '/api';
 
-export function* getList() {
-  const requestURL = `${baseUrl}/list`;
+/* eslint-disable no-underscore-dangle */
+const express = require('express');
+const fs = require('fs');
+const router = express.Router();
+const BASE_DIR = __dirname.replace('middlewares', '');
+const jsonPath = `${BASE_DIR}\\data\\data.json`;
+const bodyParser = require('body-parser');
 
-  try {
-    const list = yield call(request, requestURL);
-    yield put(peopleLoaded(list));
-  } catch (err) {
-    yield put(personLoadingError(err));
-  }
-}
-export function* get(action) {
-  const requestURL = `${baseUrl}/get/${action.personId}`;
+router.use(
+  bodyParser.urlencoded({
+    extended: true,
+  }),
+);
 
-  try {
-    const person = yield call(request, requestURL);
-    yield put(getPersonSuccess(person));
-  } catch (err) {
-    yield put(getPersonError(err));
-  }
-}
-export function* update(action) {
-  const requestURL = `${baseUrl}/update/${action.personId}`;
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(action.person),
-  };
+router.use(bodyParser.json());
+router.use((req, res, next) => {
+  res.setHeader('Content-Type', 'application/json');
+  next();
+});
 
-  try {
-    const list = yield call(request, requestURL, options);
-    yield put(updatePersonSuccess(action.personId, list));
-  } catch (err) {
-    yield put(updatePersonError(err));
-  }
-}
-export function* add(action) {
-  const requestURL = `${baseUrl}/add`;
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(action.person),
-  };
+router.get('/list', (req, res) => {
+  setTimeout(() => {
+    fs.readFile(jsonPath, 'utf8', (err, data) => {
+      res.end(data);
+    });
+  }, 600);
+});
 
-  try {
-    const list = yield call(request, requestURL, options);
-    yield put(addPersonSuccess(action.person, list));
-  } catch (err) {
-    yield put(addPersonError(err));
-  }
-}
-export function* remove(action) {
-  const requestURL = `${baseUrl}/delete/${action.personId}`;
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
+router.get('/get/:id', (req, res) => {
+  fs.readFile(jsonPath, 'utf8', (err, data) => {
+    const list = JSON.parse(data);
+    const { id } = req.params;
+    const item = _getItem(list, id);
+    res.end(JSON.stringify(item));
+  });
+});
 
-  try {
-    const list = yield call(request, requestURL, options);
-    yield put(deletePersonSuccess(list));
-  } catch (err) {
-    yield put(deletePersonError(err));
-  }
-}
+router.post('/add', (req, res) => {
+  fs.readFile(jsonPath, 'utf8', (err, data) => {
+    const list = JSON.parse(data);
+    const item = req.body;
+    const newList = _addItem(list, item);
+    const jsonData = JSON.stringify(newList);
 
-export default function* loadData() {
-  yield takeLatest(LOAD_PERSON, getList);
-  yield takeEvery(GET_PERSON, get);
-  yield takeEvery(UPDATE_PERSON, update);
-  yield takeEvery(DELETE_PERSON, remove);
-  yield takeEvery(ADD_PERSON, add);
-}
+    fs.writeFile(jsonPath, jsonData, writeFileErr => {
+      if (!writeFileErr) {
+        res.end(jsonData);
+      } else {
+        res.end(data);
+      }
+    });
+  });
+});
+
+router.post('/update/:id', (req, res) => {
+  fs.readFile(jsonPath, 'utf8', (err, data) => {
+    const list = JSON.parse(data);
+    const { id } = req.params;
+    const newList = _updateItem(list, id);
+    const jsonData = JSON.stringify(newList);
+
+    fs.writeFile(jsonPath, jsonData, writeFileErr => {
+      if (!writeFileErr) {
+        res.end(jsonData);
+      } else {
+        res.end(data);
+      }
+    });
+  });
+});
+
+router.post('/delete/:id', (req, res) => {
+  fs.readFile(jsonPath, 'utf8', (err, data) => {
+    const list = JSON.parse(data);
+    const { id } = req.params;
+    const newList = _deleteItem(list, id);
+    const jsonData = JSON.stringify(newList);
+
+    fs.writeFile(jsonPath, jsonData, writeFileErr => {
+      if (!writeFileErr) {
+        res.end(jsonData);
+      } else {
+        res.end(data);
+      }
+    });
+  });
+});
+
+// Private functions
+const _getItem = (list, id) => {
+  const currentItem = list.find(item => item.id.toString() === id.toString());
+  return currentItem;
+};
+
+const _updateItem = (list, id) => {
+  const newList = [...list];
+  newList.find(item => item.id.toString() === id.toString()).status = false;
+  return newList;
+};
+
+const _deleteItem = (list, id) => {
+  const newList = [...list];
+  const currentItemIndex = list.findIndex(
+    item => item.id.toString() === id.toString(),
+  );
+  newList.splice(currentItemIndex, 1);
+  return newList;
+};
+
+const _addItem = (list, addedItem) => {
+  const item = { status: true, ...addedItem };
+  const newList = [...list];
+  newList.push(item);
+  return newList;
+};
+
+module.exports = router;

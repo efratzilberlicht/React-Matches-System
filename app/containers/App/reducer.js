@@ -21,24 +21,6 @@ export const initialState = {
   matches: false,
   currentMatched: false,
 };
-// mock functions
-// function getMatched(matchesList, matchedId) {
-//   const currentMatched = matchesList.find(matched => matched.id === matchedId);
-//   return currentMatched;
-// }
-
-// function updateMatched(matchesList, matchedId) {
-//   debugger;
-//   const newMatchesList = [...matchesList];
-//   newMatchesList.find(match => match.id === matchedId).status = 'married';
-//   return newMatchesList;
-// }
-
-// function addMatched(matchesList, newMatched) {
-//   const newMatchesList = [...matchesList];
-//   newMatchesList.push(newMatched);
-//   return newMatchesList;
-// }
 
 /* eslint-disable default-case, no-param-reassign */
 const appReducer = (state = initialState, action) =>
@@ -53,6 +35,7 @@ const appReducer = (state = initialState, action) =>
       case LOAD_MATCH_SUCCESS:
         draft.matches = action.matches;
         draft.loading = false;
+        draft.error = false;
         break;
 
       case GET_MATCH:
