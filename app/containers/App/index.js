@@ -15,7 +15,7 @@ import AddMatch from 'containers/AddMatched';
 import MatchesView from 'containers/MatchesView';
 import HistoryPage from 'components/HistoryPage';
 import Header from 'components/Header';
-import ErrorBoundary from 'components/ErrorBoundary';
+import errorBoundary from 'components/ErrorBoundary';
 import { useInjectSaga } from 'utils/injectSaga';
 import { loadMatches } from './actions';
 import saga from './saga';
@@ -73,4 +73,5 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
+  errorBoundary,
 )(App);

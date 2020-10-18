@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -27,6 +27,9 @@ export function AddMatched({ onAddedMatched }) {
   document.body.style.overflow = 'hidden';
   useInjectReducer({ key: 'addMatched', reducer });
   useInjectSaga({ key: 'addMatched', saga });
+
+  const idRef = createRef();
+
   const [addaMatched, setAddaMatched] = useState(false);
   const [addMatch, setAddMatch] = useState(true);
   const [alert, setalert] = useState(false);
@@ -45,6 +48,8 @@ export function AddMatched({ onAddedMatched }) {
     if (event === 'single' || event === 'divorced' || event === 'widower') {
       matched.status = event;
       setStatus(event);
+    } else if (event.target.name === 'id') {
+      matched[event.target.name] = idRef.current.value;
     } else {
       matched[event.target.name] =
         event.target.name === 'gender' ? event.target.id : event.target.value;
@@ -70,6 +75,7 @@ export function AddMatched({ onAddedMatched }) {
                 <Form.Control
                   name="id"
                   type="text"
+                  ref={idRef}
                   placeholder="Identity number"
                   onChange={handleAddMatched}
                 />

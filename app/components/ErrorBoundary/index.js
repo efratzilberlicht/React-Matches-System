@@ -1,25 +1,45 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Alert } from 'react-bootstrap';
+import './style.scss';
 
-export class ErrorBoundary extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { error: null, errorInfo: null };
-  }
+class ErrorBoundary extends React.Component {
+  state = { error: null, errorInfo: null };
 
   componentDidCatch(error, errorInfo) {
     this.setState({
       error,
       errorInfo,
     });
-    // Log error info somewhere
   }
 
   render() {
     if (this.state.errorInfo) {
-      return <h2>Something went wrong!</h2>;
+      return (
+        <div className="errorBoundery">
+          <Alert severity="error">
+            <Alert.Heading className="errorString">
+              We are sorry there here an error!
+            </Alert.Heading>
+            {this.state.error && (
+              <p className="errorString">{this.state.error.toString()} </p>
+            )}
+            <strong className="errorString">
+              {this.state.errorInfo.componentStack}
+            </strong>
+          </Alert>
+        </div>
+      );
     }
-    return null;
+
+    return this.props.children;
   }
 }
 
-export default ErrorBoundary;
+function errorBoundary(Component) {
+  return props => (
+    <ErrorBoundary>
+      <Component {...props} />
+    </ErrorBoundary>
+  );
+}
+export default errorBoundary;
